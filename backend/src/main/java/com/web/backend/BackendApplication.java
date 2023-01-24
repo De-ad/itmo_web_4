@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication()
 @EnableJpaRepositories("com.web.backend.repository")
-//@ComponentScan(basePackages = { "com.web.backend.repository" })
 @EntityScan("com.web.backend.entity")
 public class BackendApplication {
 

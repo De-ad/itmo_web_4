@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.io.Serializable;
 
 
@@ -24,7 +23,6 @@ public class CoordinateRowEntity implements Serializable {
     private Double r;
     private Boolean result;
 
-//    @Transi
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;

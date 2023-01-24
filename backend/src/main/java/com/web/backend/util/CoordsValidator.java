@@ -14,11 +14,11 @@ public class CoordsValidator {
     }
 
     private boolean validateCircle(Double x, Double y, Double r){
-            return (x <= 0) && (y <= 0) && (Math.pow(r/2, 2) <= Math.pow(y, 2) + Math.pow(x, 2));
+            return (x <= 0) && (y <= 0) && (Math.pow(r/2, 2) >= Math.pow(y, 2) + Math.pow(x, 2));
     }
 
     private boolean validateTriangle(Double x, Double y, Double r){
-            return (x >= 0) && (y >= 0) && (x >= r/2 + y);
+            return (x >= 0) && (y >= 0) && (r/2 >= x + y);
     }
 
 }

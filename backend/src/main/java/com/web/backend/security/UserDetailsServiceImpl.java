@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
-//for getting UserDetail obj
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
