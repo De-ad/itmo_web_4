@@ -1,29 +1,44 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
 const CoordinatesForm = () => {
-    const [xValue, setXValue] = useState("");
-    const [yValue, setYValue] = useState("");
-    const [rValue, setRValue] = useState("");
+  const [xValue, setXValue] = useState("");
+  const [yValue, setYValue] = useState("");
+  const [rValue, setRValue] = useState("");
 
-    const submitCoordinates = (e) => {
-        e.preventDefault();
-        console.log("submit coords button was clicked");
-    }
+  const submitCoordinates = (e) => {
+    e.preventDefault();
+    console.log("submit coords button was clicked");
+  };
 
-
-
-    return (
-        <div>
-            <input type="text"
-                   placeholder="Enter x coordinate"
-                   value={xValue}
-                   onChange={e => setXValue(e.target.value)}
-            />
-            <input type="text" placeholder="Enter y coordinate"/>
-            <input type="text" placeholder="Enter radius value"/>
-            <button onClick={submitCoordinates}>Check</button>
-        </div>
-    );
+  return (
+    <div className="grid w-64 rounded-lg p-4 space-y-3 bg-pale-green shadow-lg">
+      <input
+        type="text"
+        className="rounded-lg p-2 shadow-lg"
+        placeholder="Enter x coordinate"
+        value={xValue}
+        onChange={(e) => setXValue(e.target.value)}
+      />
+      <input
+        className="rounded-lg p-2 shadow-lg"
+        type="text"
+        placeholder="Enter y coordinate"
+      />
+      <input
+        type="text"
+        className="rounded-lg p-2 shadow-lg"
+        placeholder="Enter radius value"
+      />
+      <div className="flex justify-center ">
+        <button
+          onClick={submitCoordinates}
+          className=" border-2 text-gray-900 border-[#3d724b] rounded-full w-fit px-2 shadow-lg "
+        >
+          Check
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default CoordinatesForm;
