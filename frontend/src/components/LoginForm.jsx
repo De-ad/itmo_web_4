@@ -1,13 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login, register } from "../actions/auth";
 
 const LoginForm = () => {
-  const [login, setLogin] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitForm = (e) => {
+  // works
+  const isLoggedIn = useSelector((state) => state.authReducer.isLoggedIn);
+  const message = useSelector((state) => state.messageReducer.message);
+  const dispatch = useDispatch();
+
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log(login);
-    console.log(password);
+    dispatch(login(username, password));
+  };
+
+  const handleRegistration = (e) => {
+    e.preventDefault();
+    dispatch(register(username, password));
   };
 
   return (
@@ -16,7 +28,7 @@ const LoginForm = () => {
         type="text"
         className="rounded-lg p-2 shadow-lg"
         placeholder="Enter username"
-        onChange={(e) => setLogin(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <input
         type="password"
@@ -26,18 +38,19 @@ const LoginForm = () => {
       />
       <div className="flex justify-center space-x-2">
         <button
-          onClick={submitForm}
+          onClick={handleLogin}
           className=" border-2 text-gray-900 border-[#3d724b] rounded-full w-fit px-2 shadow-lg "
         >
           Log in
         </button>
         <button
-          onClick={submitForm}
+          onClick={handleRegistration}
           className=" border-2 text-gray-900 border-[#3d724b] rounded-full w-fit px-2 shadow-lg "
         >
           Sign up
         </button>
       </div>
+      <div>{message}</div>
     </div>
   );
 };

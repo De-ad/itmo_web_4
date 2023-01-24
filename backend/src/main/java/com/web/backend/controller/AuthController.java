@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController{
@@ -34,16 +34,19 @@ public class AuthController{
     @Autowired
     private PasswordEncoder encoder;
 
+    // better through constructor
     @Autowired
     private JwtUtils jwtUtils;
 
     @PostMapping("/signin")
+    // type paramater
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
 
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
+            // no need to do this
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
 
@@ -51,17 +54,18 @@ public class AuthController{
             return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername()));
         }
         catch (AuthenticationException e){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: authentication error. User doesn't exist"));
+            return ResponseEntity.ok(new MessageResponse("Error: authentication error. User doesn't exist"));
         }
 
     }
 
     @PostMapping("/signup")
     public ResponseEntity registerUser(@Valid @RequestBody SignupRequest signUpRequest){
+        // no guarantee that user with specified in request username woun't be
+        // inserted after this check but before userRepo.save(userEntity)
         if (userRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .ok("Error: Username is already taken!");
         }
         UserEntity userEntity = new UserEntity();
         UserDetailsImpl user = new UserDetailsImpl(userEntity);

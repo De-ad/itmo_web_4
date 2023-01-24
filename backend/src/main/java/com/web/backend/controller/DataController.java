@@ -20,7 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/data")
 @Transactional
@@ -41,10 +41,14 @@ public class DataController {
     @Autowired
     CoordsValidator coordsValidator;
 
+//    убрать логику из контроллеров
+
     @PostMapping("/add")
     public ResponseEntity checkData(@Valid @RequestBody DataRequest dataRequest){
         try{
-            if(jwtUtils.validateJwtToken(dataRequest.getJwtToken())){
+            System.out.println(jwtUtils.validateJwtToken(dataRequest.getToken()));
+            // it is already checked in filter, no need to validate second time
+            if(jwtUtils.validateJwtToken(dataRequest.getToken())){
 
                 CoordinateRowEntity coordinateRowEntity = new CoordinateRowEntity();
                 coordinateRowEntity.setX(dataRequest.getX());
@@ -56,7 +60,7 @@ public class DataController {
                 coordsValidator.validate(coordinateRowEntity.getX(), coordinateRowEntity.getY(),
                         coordinateRowEntity.getR()));
 
-                UserEntity userEntity = userRepo.findByUsername(jwtUtils.extractUsername(dataRequest.getJwtToken()));
+                UserEntity userEntity = userRepo.findByUsername(jwtUtils.extractUsername(dataRequest.getToken()));
 
 //                save to DB
                 coordinateRowEntity.setUserEntity(userEntity);

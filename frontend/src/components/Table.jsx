@@ -1,46 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Table = () => {
-  const RowData = [
-    {
-      id: 1,
-      x: 1,
-      y: 1,
-      r: 1,
-      result: "true",
-      executionTime: 1.23,
-      startTime: "01.21",
-    },
-    {
-      id: 2,
-      x: 2,
-      y: 1,
-      r: 1,
-      result: "true",
-      executionTime: 1.23,
-      startTime: "01.21",
-    },
-    {
-      id: 3,
-      x: 3,
-      y: 1,
-      r: 1,
-      result: "true",
-      executionTime: 1.23,
-      startTime: "01.21",
-    },
-    {
-      id: 4,
-      x: 4,
-      y: 1,
-      r: 1,
-      result: "true",
-      executionTime: 1.23,
-      startTime: "01.21",
-    },
-  ];
+  const RowData = useSelector((state) => state.dataReducer.payload);
+  const DisplayData = RowData;
 
-  return (
+  return DisplayData !== undefined ? (
     <table className=" bg-pale-green rounded-lg">
       <thead>
         <tr>
@@ -71,7 +36,7 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {RowData.map((row) => (
+        {DisplayData.map((row) => (
           <tr>
             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               {row.x}
@@ -83,11 +48,43 @@ const Table = () => {
               {row.r}
             </td>
             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              {row.result}
+              {row.result.toString()}
             </td>
           </tr>
         ))}
       </tbody>
+    </table>
+  ) : (
+    <table className=" bg-pale-green rounded-lg">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+          >
+            X
+          </th>
+          <th
+            scope="col"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+          >
+            Y
+          </th>
+          <th
+            scope="col"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+          >
+            R
+          </th>
+          <th
+            scope="col"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+          >
+            Result
+          </th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
   );
 };

@@ -22,7 +22,7 @@ public class DataRequest {
     Double r;
 
     @NotBlank
-    String jwtToken;
+    String token;
 
 
 }

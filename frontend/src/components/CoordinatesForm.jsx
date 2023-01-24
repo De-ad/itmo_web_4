@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import { getData } from "../actions/data";
+import { useDispatch } from "react-redux";
 
 const CoordinatesForm = () => {
   const [xValue, setXValue] = useState("");
   const [yValue, setYValue] = useState("");
   const [rValue, setRValue] = useState("");
 
+  const dispatch = useDispatch();
+
   const submitCoordinates = (e) => {
     e.preventDefault();
     console.log("submit coords button was clicked");
+    dispatch(getData(xValue, yValue, rValue));
   };
 
   return (
@@ -23,11 +28,15 @@ const CoordinatesForm = () => {
         className="rounded-lg p-2 shadow-lg"
         type="text"
         placeholder="Enter y coordinate"
+        value={yValue}
+        onChange={(e) => setYValue(e.target.value)}
       />
       <input
         type="text"
         className="rounded-lg p-2 shadow-lg"
         placeholder="Enter radius value"
+        value={rValue}
+        onChange={(e) => setRValue(e.target.value)}
       />
       <div className="flex justify-center ">
         <button

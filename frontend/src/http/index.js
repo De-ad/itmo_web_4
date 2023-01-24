@@ -1,10 +1,11 @@
 import axios, { defaults } from "axios";
 
-export const API_URL = "http://localhost:8082/api";
+export const API_AUTH_URL = "http://localhost:8082/api/auth/";
+export const API_DATA_URL = "http://localhost:8082/api/data/";
 
 const api = axios.create({
   withCredentials: true,
-  url: API_URL,
+  url: API_AUTH_URL,
 });
 
 // config - instance of axios

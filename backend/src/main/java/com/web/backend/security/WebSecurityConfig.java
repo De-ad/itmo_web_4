@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -43,7 +44,6 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    password encoder was injected through dependency injection. Don't know if i did it right
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider =  new DaoAuthenticationProvider();
@@ -55,7 +55,8 @@ public class WebSecurityConfig {
 //    authenticationProvider was also injected with DI
     @Bean
     public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf().disable()
+        http
+                .csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll().and()
                 .authorizeHttpRequests().requestMatchers("/api/data/**").permitAll()
                 .anyRequest().authenticated().and()

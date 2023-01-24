@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./index";
+import { connect, useSelector } from "react-redux";
 
 const AppRouter = () => {
-  let isAuth = false;
+  function useAuth() {
+    console.log(useSelector((state) => state.authReducer.isLoggedIn));
+    return useSelector((state) => state.authReducer.isLoggedIn);
+  }
+  const isAuth = useAuth();
 
   return isAuth ? (
     <Routes>

@@ -3,15 +3,16 @@ import Navbar from "./components/Navbar";
 import AppRouter from "./router/AppRouter";
 import axios from "axios";
 import "./index.css";
-import { useEffect } from "react";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 function App() {
-  //TODO: proper login, axios data from get, send data, canvas, clock, add redux?
-
   return (
     <BrowserRouter>
-      <Navbar />
-      <AppRouter />
+      <Provider store={store}>
+        <Navbar />
+        <AppRouter />
+      </Provider>
     </BrowserRouter>
   );
 }
