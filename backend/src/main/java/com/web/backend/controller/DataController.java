@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.web.backend.entity.CoordinateRowEntity;
 import com.web.backend.entity.UserEntity;
 import com.web.backend.payload.DataRequest;
+import com.web.backend.payload.DeleteAllRequest;
 import com.web.backend.payload.MessageResponse;
 import com.web.backend.repository.CoordinateRowRepo;
 import com.web.backend.repository.UserRepo;
 import com.web.backend.security.JwtUtils;
 import com.web.backend.util.CoordsValidator;
 import com.web.backend.util.JsonParser;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/data")
+@Transactional
 public class DataController {
 
     @Autowired
@@ -62,8 +65,6 @@ public class DataController {
 //                extract all coordinate rows to send it to front
 
                 List<CoordinateRowEntity> coordinateRowEntityList = coordinateRowRepo.findAllByUserEntity(userEntity);
-//                convert to json
-//                write into response entity
                 return ResponseEntity.ok(jsonParser.parseToJson(coordinateRowEntityList));
             }
             else{return ResponseEntity.badRequest().body(new MessageResponse("Error: jwt validation failed"));}
@@ -74,7 +75,30 @@ public class DataController {
         catch (AuthenticationException e){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: token is not valid"));
         } catch (JsonProcessingException e) {
-            return ResponseEntity.ok(new MessageResponse("json!!!!!!!!!"));
+            return ResponseEntity.ok(new MessageResponse("json!!!!!!!!! exception"));
+        }
+
+    }
+
+    @PostMapping("/delete_all")
+    public ResponseEntity deleteAll(@Valid @RequestBody DeleteAllRequest deleteAllRequest){
+        try {
+            if (jwtUtils.validateJwtToken(deleteAllRequest.getJwtToken())){
+
+                UserEntity userEntity =  userRepo.findByUsername(jwtUtils.extractUsername(deleteAllRequest.getJwtToken()));
+                coordinateRowRepo.deleteAllByUserEntity(userEntity);
+                return ResponseEntity.ok(new MessageResponse("Successfully deleted all user's data"));
+            }
+            return ResponseEntity.badRequest().body(new MessageResponse("Jwt token is invalid"));
+
+        }
+        catch (ValidationException e){
+            return ResponseEntity.badRequest().body(new MessageResponse("Data is invalid"));
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Unknown exception inside DataController delete" +
+                    "all. Need to check..."));
         }
 
     }
