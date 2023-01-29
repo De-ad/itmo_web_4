@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CoordsValidator {
 
+    @Audit
     public boolean validate(Double x, Double y, Double r){
         return validateSquare(x, y, r) || validateCircle(x, y, r) || validateTriangle(x, y, r);
     }

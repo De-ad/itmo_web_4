@@ -9,6 +9,7 @@ import com.web.backend.payload.MessageResponse;
 import com.web.backend.repository.CoordinateRowRepo;
 import com.web.backend.repository.UserRepo;
 import com.web.backend.security.JwtUtils;
+import com.web.backend.util.Audit;
 import com.web.backend.util.CoordsValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,6 +69,7 @@ public class DataService {
         return new MessageResponse("Successfully deleted all user's data");
     }
 
+    @Audit
     public List<CoordinateRowEntity> getAll(@RequestBody GetAllRequest getAllRequest){
         UserEntity userEntity = userRepo.findByUsername(jwtUtils.extractUsername(getAllRequest.getToken()));
         List<CoordinateRowEntity> coordinateRowEntityList = coordinateRowRepo.findAllByUserEntity(userEntity);

@@ -48,6 +48,7 @@ public class AuthService {
         return new JwtResponse(jwt, userDetails.getUsername());
     }
 
+    @Audit
     public MessageResponse register(SignupRequest signUpRequest){
         UserEntity userEntity = new UserEntity();
         UserDetailsImpl user = new UserDetailsImpl(userEntity);

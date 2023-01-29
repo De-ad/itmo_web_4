@@ -1,5 +1,7 @@
 package com.web.backend.util;
 
+import com.web.backend.entity.AuditEntity;
+import com.web.backend.repository.AuditEntityRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -14,14 +16,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class AuditAnnotationBeanPostProcessor implements BeanPostProcessor {
-    private final AuditEntityRepository auditEntityRepository;
     private final Map<String, String> annotationMap = new HashMap<>();
 
     @Autowired
-    public AuditAnnotationBeanPostProcessor(AuditEntityRepository auditEntityRepository) {
-        this.auditEntityRepository = auditEntityRepository;
-    }
-
+    private AuditEntityRepository auditEntityRepository;
 
     @Override
      public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -30,17 +28,17 @@ public class AuditAnnotationBeanPostProcessor implements BeanPostProcessor {
 
     @Override
      public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (hasAnnotation(bean)){
+
+        if (hasAnnotation(bean)) {
             getMethods(bean, beanName);
-            Proxy.newProxyInstance(bean.getClass().getClassLoader(),
-                    bean.getClass().getInterfaces(),
+            return Proxy.newProxyInstance(bean.getClass().getClassLoader(), bean.getClass().getInterfaces(),
                     (proxy, method, args) -> {
-                    String annotation = annotationMap.getOrDefault(method.getName(), null);
-                    if (annotation != null) {
-                        auditEntityRepository.save(new AuditEntity(LocalDateTime.now().toString(), method.getName()));
-                    }
-                    return method.invoke(bean, args);
-            });
+                        String annotation = annotationMap.getOrDefault(method.getName(), null);
+                        if (annotation != null) {
+                            auditEntityRepository.save(new AuditEntity(LocalDateTime.now().toString(), method.getName()));
+                        }
+                        return method.invoke(bean, args);
+                    });
         }
         return bean;
     }
@@ -56,7 +54,8 @@ public class AuditAnnotationBeanPostProcessor implements BeanPostProcessor {
     }
 
     private boolean hasAnnotation(Object bean){
-        return Stream.of(ReflectionUtils.getAllDeclaredMethods(bean.getClass()))
+        return Stream
+                .of(ReflectionUtils.getAllDeclaredMethods(bean.getClass()))
                 .anyMatch(method -> AnnotationUtils.getAnnotation(method, Audit.class) != null);
     }
 
