@@ -8,13 +8,16 @@ import com.web.backend.payload.SignupRequest;
 import com.web.backend.repository.UserRepo;
 import com.web.backend.security.JwtUtils;
 import com.web.backend.security.UserDetailsImpl;
+import com.web.backend.util.Audit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Service
 public class AuthService {
@@ -46,19 +49,17 @@ public class AuthService {
     }
 
     public MessageResponse register(SignupRequest signUpRequest){
-        // no guarantee that user with specified in request username woun't be
-        // inserted after this check but before userRepo.save(userEntity)
-//        if (userRepo.existsByUsername(signUpRequest.getUsername())) {
-//            return ResponseEntity
-//                    .ok("Error: Username is already taken!");
-//        }
-//        TODO: write another check for user existence
         UserEntity userEntity = new UserEntity();
         UserDetailsImpl user = new UserDetailsImpl(userEntity);
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
-        userRepo.save(userEntity);
-        return new MessageResponse("User registered successfully!");
+        try {
+            userRepo.save(userEntity);
+            return new MessageResponse("User registered successfully!");
+        }
+        catch(DataIntegrityViolationException e){
+            return new MessageResponse("User already exist");
+        }
 
     }
 

@@ -7,8 +7,6 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // works
-  const isLoggedIn = useSelector((state) => state.authReducer.isLoggedIn);
   const message = useSelector((state) => state.messageReducer.message);
   const dispatch = useDispatch();
 
@@ -19,7 +17,12 @@ const LoginForm = () => {
 
   const handleRegistration = (e) => {
     e.preventDefault();
-    dispatch(register(username, password));
+      // if (username.length > 3 && username.length < 20) {
+         dispatch(register(username, password));
+      // }
+      // else{
+      //     setMessage("Username length should be between 3 and 20")
+      // }
   };
 
   return (

@@ -5,6 +5,7 @@ import axios from "axios";
 import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import PropTypes from "prop-types";
 
 function App() {
   return (
@@ -16,5 +17,7 @@ function App() {
     </BrowserRouter>
   );
 }
+
+
 
 export default App;

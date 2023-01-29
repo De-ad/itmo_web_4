@@ -1,9 +1,14 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, {useEffect} from "react";
+import {connect, useDispatch, useSelector} from "react-redux";
+import {getAllData} from "../actions/data";
 
 const Table = () => {
-  const RowData = useSelector((state) => state.dataReducer.payload);
-  const DisplayData = RowData;
+  const dispatch = useDispatch();
+  const DisplayData = useSelector((state) => state.dataReducer.payload);
+
+  useEffect(() =>{
+    dispatch(getAllData());
+  },[])
 
   return DisplayData !== undefined ? (
     <table className=" bg-pale-green rounded-lg">
@@ -89,4 +94,8 @@ const Table = () => {
   );
 };
 
-export default Table;
+const mapStateToProps = function (state) {
+  return state.dataReducer.payload;
+}
+
+export default connect(mapStateToProps)(Table);

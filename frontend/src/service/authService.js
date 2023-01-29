@@ -1,15 +1,16 @@
 import axios from "axios";
 import { api, API_AUTH_URL } from "../http";
 
-const register = (username, password) => {
-  return axios.post(API_AUTH_URL + "signup", {
+async function register(username, password){
+  return await axios.post(API_AUTH_URL + "signup", {
     username,
     password,
   });
 };
 
-const login = (username, password) => {
-  return axios
+
+async function login(username, password){
+  return await axios
     .post(API_AUTH_URL + "signin", {
       username,
       password,
@@ -17,7 +18,6 @@ const login = (username, password) => {
     .then((response) => {
       if (response.data.token) {
         localStorage.setItem("token", JSON.stringify(response.data.token));
-        // console.log(localStorage.getItem("token"));
       }
       return response.data;
     });

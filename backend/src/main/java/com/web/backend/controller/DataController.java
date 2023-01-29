@@ -2,6 +2,7 @@ package com.web.backend.controller;
 
 import com.web.backend.payload.DataRequest;
 import com.web.backend.payload.DeleteAllRequest;
+import com.web.backend.payload.GetAllRequest;
 import com.web.backend.payload.MessageResponse;
 import com.web.backend.service.DataService;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,6 @@ public class DataController {
     @Autowired
     DataService dataService;
 
-//    убрать логику из контроллеров +
 
     @PostMapping("/add")
     public ResponseEntity<Object> checkData(@Valid @RequestBody DataRequest dataRequest){
@@ -50,6 +50,16 @@ public class DataController {
                     "all. Need to check..."));
         }
 
+    }
+
+    @PostMapping("/get_all")
+    public ResponseEntity<Object> getAll(@Valid @RequestBody GetAllRequest getAllRequest){
+        try{
+            return ResponseEntity.ok(dataService.getAll(getAllRequest));
+        }
+        catch(Exception e){
+            return ResponseEntity.ok(e.getMessage());
+        }
     }
 
 

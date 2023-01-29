@@ -9,6 +9,6 @@ import lombok.Setter;
 public class DeleteAllRequest {
 
     @NotBlank
-    private String jwtToken;
+    private String token;
 
 }

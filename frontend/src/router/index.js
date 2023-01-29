@@ -1,8 +1,8 @@
 import { Navigate, Route } from "react-router-dom";
-import GraphPage from "../pages/GraphPage";
-import StartPage from "../pages/StartPage";
+import GraphPage from "../components/pages/GraphPage";
+import StartPage from "../components/pages/StartPage";
 import React from "react";
-import LoginPage from "../pages/LoginPage";
+import LoginPage from "../components/pages/LoginPage";
 
 export const privateRoutes = [
   { path: "/coordinates-form", element: <GraphPage /> },

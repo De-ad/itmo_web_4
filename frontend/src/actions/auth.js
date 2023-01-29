@@ -33,7 +33,6 @@ export const register = (username, password) => (dispatch) => {
           error.response.data.message) ||
         error.message ||
         error.toString();
-
       dispatch({
         type: REGISTER_FAIL,
       });
@@ -52,10 +51,6 @@ export const login = (username, password) => (dispatch) => {
       dispatch({
         type: LOGIN_SUCCESS,
       });
-      // dispatch({
-      //     type : SET_MESSAGE,
-      //     payload : response.data.message,
-      // })
       return Promise.resolve();
     },
     (error) => {
@@ -65,7 +60,6 @@ export const login = (username, password) => (dispatch) => {
           error.response.data.message) ||
         error.message ||
         error.toString();
-
       dispatch({
         type: LOGIN_FAIL,
       });

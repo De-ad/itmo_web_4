@@ -10,7 +10,6 @@ import com.web.backend.repository.CoordinateRowRepo;
 import com.web.backend.repository.UserRepo;
 import com.web.backend.security.JwtUtils;
 import com.web.backend.util.CoordsValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,6 +19,7 @@ import java.util.List;
 
 @Service
 public class DataService {
+
 
     final
     JwtUtils jwtUtils;
@@ -42,7 +42,6 @@ public class DataService {
 
 
     public List<CoordinateRowEntity> addRowAndGetAll(@RequestBody DataRequest dataRequest){
-        // it is already checked in filter, no need to validate second time +
         CoordinateRowEntity coordinateRowEntity = new CoordinateRowEntity();
         coordinateRowEntity.setX(dataRequest.getX());
         coordinateRowEntity.setY(dataRequest.getY());
@@ -64,13 +63,13 @@ public class DataService {
 
 
     public MessageResponse deleteAll(@RequestBody DeleteAllRequest deleteAllRequest ){
-        UserEntity userEntity =  userRepo.findByUsername(jwtUtils.extractUsername(deleteAllRequest.getJwtToken()));
+        UserEntity userEntity =  userRepo.findByUsername(jwtUtils.extractUsername(deleteAllRequest.getToken()));
         coordinateRowRepo.deleteAllByUserEntity(userEntity);
         return new MessageResponse("Successfully deleted all user's data");
     }
 
     public List<CoordinateRowEntity> getAll(@RequestBody GetAllRequest getAllRequest){
-        UserEntity userEntity = userRepo.findByUsername(jwtUtils.extractUsername(getAllRequest.getJwtToken()));
+        UserEntity userEntity = userRepo.findByUsername(jwtUtils.extractUsername(getAllRequest.getToken()));
         List<CoordinateRowEntity> coordinateRowEntityList = coordinateRowRepo.findAllByUserEntity(userEntity);
         return coordinateRowEntityList;
     }

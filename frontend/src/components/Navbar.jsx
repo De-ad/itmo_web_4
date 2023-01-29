@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/auth";
+import {getAllData} from "../actions/data";
 
 const Navbar = () => {
-  // const isAuth =  useSelector((state) => state.authReducer.isLoggedIn);
   const dispatch = useDispatch();
+  // const DisplayData = useSelector((state) => state.dataReducer.payload);
 
-  const handleLogOut = () => {
+    const handleLogOut = () => {
     dispatch(logout());
   };
+
 
   const logoutButtonValue = useSelector((state) => state.authReducer.isLoggedIn)
     ? "Log out"
@@ -34,5 +36,9 @@ const Navbar = () => {
     </div>
   );
 };
+
+// const mapStateToProps = function (state) {
+//     return state.dataReducer.payload;
+// }
 
 export default Navbar;

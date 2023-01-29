@@ -9,5 +9,5 @@ import lombok.Setter;
 public class GetAllRequest {
 
     @NotBlank
-    private String jwtToken;
+    private String token;
 }

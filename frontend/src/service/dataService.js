@@ -2,12 +2,12 @@ import axios from "axios";
 import { API_DATA_URL } from "../http";
 import authHeader from "./auth-header";
 
-const sendData = (x, y, r) => {
-  x = parseInt(x);
-  y = parseInt(y);
-  r = parseInt(r);
+async function sendData (x, y, r){
+  x = parseFloat(x);
+  y = parseFloat(y);
+  r = parseFloat(r);
   const token = authHeader();
-  return axios.post(API_DATA_URL + "add", {
+  return await axios.post(API_DATA_URL + "add", {
     x,
     y,
     r,
@@ -16,8 +16,19 @@ const sendData = (x, y, r) => {
 };
 
 // returns message
-const deleteAllData = () => {
-  return axios.post(API_DATA_URL + "delete_all");
-};
+async function deleteAllData (){
+  const token = authHeader();
+  return axios.post(API_DATA_URL + "delete_all", {
+    token
+  });
+}
 
-export default { sendData, deleteAllData };
+
+async function getData(){
+  const token = authHeader();
+  return await axios.post(API_DATA_URL + "get_all", {
+    token
+  });
+}
+
+export default { sendData, deleteAllData, getData };
